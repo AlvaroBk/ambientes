@@ -59,8 +59,10 @@ class _CustomCardState extends State<CustomCard>
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final cardHeight = screenSize.height * 0.2;
     return Container(
-      height: 145,
+      height: cardHeight,
       width: widget.size.width * 0.35,
       decoration: BoxDecoration(
         color: const Color(0x00eeefe9),

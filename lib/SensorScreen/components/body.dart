@@ -22,13 +22,13 @@ class _SensorScreenBodyState extends State<SensorScreenBody> {
                 SizedBox(height: size.height * 0.05),
                 InkWell(
                   child: IconButton(
-                  alignment:Alignment.topLeft ,
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                    alignment: Alignment.topLeft,
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
-               ),
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -174,7 +174,6 @@ class _SensorScreenBodyState extends State<SensorScreenBody> {
                         topic: 'showroom/sala/tv',
                       ),
                     ),
-                    
                   ],
                 ),
               ],
@@ -182,7 +181,6 @@ class _SensorScreenBodyState extends State<SensorScreenBody> {
           );
         },
       ),
-     
     );
   }
 }
