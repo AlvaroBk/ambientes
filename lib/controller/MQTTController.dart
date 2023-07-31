@@ -27,18 +27,37 @@ class MQTTService {
     }
   }
 
-  static void publishMessage(String topic, String message) {
+  static void publishMessage(String topic, var message) {
+   
     if (_client != null) {
       final builder = mqtt.MqttClientPayloadBuilder();
       builder.addString(message);
       _client!
           .publishMessage(topic, mqtt.MqttQos.exactlyOnce, builder.payload!);
+      
     } else {
       print('MQTT client not initialized');
     }
   }
+
+  static void subscribe(String topic, void Function(String) onMessageReceived) {
+    if (_client != null) {
+      _client!.subscribe(topic, mqtt.MqttQos.exactlyOnce);
+
+      _client!.updates!.listen((List<mqtt.MqttReceivedMessage<mqtt.MqttMessage?>> messages) {
+        final mqtt.MqttPublishMessage message = messages[0].payload as mqtt.MqttPublishMessage;
+        final String payload = mqtt.MqttPublishPayload.bytesToStringAsString(message.payload.message);
+        onMessageReceived(payload);
+      });
+    } else {
+      print('MQTT client not initialized');
+    }
+  }
+
+  
 }
 
 void main() {
   MQTTService.connect();
+ 
 }

@@ -63,7 +63,7 @@ class _CustomCardState extends State<CustomCard>
       height: 145,
       width: widget.size.width * 0.35,
       decoration: BoxDecoration(
-        color: const Color(0xEEEFE9),
+        color: const Color(0x00eeefe9),
         borderRadius: BorderRadius.circular(20),
         boxShadow: const [
           BoxShadow(

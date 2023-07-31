@@ -37,14 +37,7 @@ class BottomNavigationScreen extends StatelessWidget {
                     icon: Icon(Icons.verified_user),
                     label: '',
                   ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.signal_cellular_alt),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: '',
-                  ),
+                 
                 ],
               ),
             ),

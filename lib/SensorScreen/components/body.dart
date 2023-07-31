@@ -20,6 +20,15 @@ class _SensorScreenBodyState extends State<SensorScreenBody> {
             child: ListView(
               children: [
                 SizedBox(height: size.height * 0.05),
+                InkWell(
+                  child: IconButton(
+                  alignment:Alignment.topLeft ,
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  ),
+               ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -146,11 +155,34 @@ class _SensorScreenBodyState extends State<SensorScreenBody> {
                     ),
                   ],
                 ),
+                SizedBox(height: size.height * 0.025),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: CustomCard(
+                        size: size,
+                        icon: Icon(
+                          Icons.tv_rounded,
+                          size: size.width * 0.15,
+                          color: Colors.grey.shade400,
+                        ),
+                        title: "TV",
+                        statusOn: "ON_OFF",
+                        statusOff: "ON_OFF",
+                        topic: 'showroom/sala/tv',
+                      ),
+                    ),
+                    
+                  ],
+                ),
               ],
             ),
           );
         },
       ),
+     
     );
   }
 }

@@ -1,7 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
-
 import '../../controller/TempatureController.dart';
 import '../../utils/AppAssets.dart';
 import '../../utils/AppSpaces.dart';
@@ -22,10 +22,22 @@ class TempatureScreen extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: Column(children: [
               AppSpaces.vertical30,
+              Align( // Wrap the IconButton with Align
+                  alignment: Alignment.topLeft, // Align the IconButton to the top left corner
+                  child: InkWell(
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ),
               SizedBox(
                 height: (Get.width - 60) / 3,
                 child: Obx(
                   () => Row(children: [
+                    
                     HomeButton(
                       image: AppAssets.temperature,
                       isSelected: controller.index.value == 0,
@@ -43,21 +55,24 @@ class TempatureScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: SleekCircularSlider(
                     appearance: CircularSliderAppearance(
+                      animationEnabled: false,
                       customColors: CustomSliderColors(
                         trackColor: Get.theme.disabledColor,
                         dotColor: Get.theme.disabledColor,
-                        progressBarColor: Get.theme.primaryColor,
+                        progressBarColor:Get.theme.disabledColor,
                       ),
                       startAngle: 130.0,
                       angleRange: 280.0,
+                      
                       size: Get.mediaQuery.size.height,
                       customWidths: CustomSliderWidths(
                           progressBarWidth: 5, handlerSize: 10),
                     ),
-                    min: 13,
+                    min: 0,
                     max: 28,
-                    initialValue: controller.tempature.value,
-                    onChangeEnd: (value) => controller.tempature.value = value,
+                    initialValue: 0,
+                   
+                    // onChangeEnd: (value) => controller.tempature.value = value,
                     innerWidget: (percentage) => Padding(
                       padding: const EdgeInsets.all(30.0),
                       child: Center(
@@ -85,7 +100,7 @@ class TempatureScreen extends StatelessWidget {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    '${percentage.toStringAsFixed(0)}°C',
+                                    '${controller.tempature.value.toStringAsFixed(0)}°C',
                                     style: TextStyle(
                                       fontSize: 15 +
                                           (22 *
@@ -102,17 +117,14 @@ class TempatureScreen extends StatelessWidget {
                 ),
               ),
               CircleButton(callback: (state) {
-                // Handle the state value here
+                
+                print(state);
               }),
               AppSpaces.vertical10,
               AppSpaces.vertical10,
-              AppButton(
-                onTap: () {
-                  print(controller.tempature);
-                },
-                text: 'Definir temperatura',
-              ),
+              
               AppSpaces.vertical30,
+              
             ]),
           );
         },

@@ -117,9 +117,9 @@ class _CircleButtonState extends State<CircleButton> {
       isOn = !isOn;
     });
 
-    String state = isOn ? 'ON' : 'OFF';
+    String state = isOn ? 'AN' : 'AO';
     widget.callback(state);
-    MQTTService.publishMessage('topic', state);
+    MQTTService.publishMessage('showroom/sala/ac', state);
   }
 
   @override
@@ -128,7 +128,7 @@ class _CircleButtonState extends State<CircleButton> {
       onTap: _toggleButtonState,
       borderRadius: BorderRadius.circular(20),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: isOn ? Colors.green : Colors.red,
