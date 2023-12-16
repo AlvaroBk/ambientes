@@ -129,6 +129,6 @@ class TempatureScreen extends StatelessWidget {
           );
         },
       ),
-    );
+    ) ;
   }
 }

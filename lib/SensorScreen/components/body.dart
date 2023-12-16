@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../helpers/BaseMqttHandler.dart';
 import 'custom_card.dart';
 
 class SensorScreenBody extends StatefulWidget {
@@ -11,7 +12,7 @@ class SensorScreenBody extends StatefulWidget {
 class _SensorScreenBodyState extends State<SensorScreenBody> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return BaseMQTTScreen(child:SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
           final size = constraints.biggest;
@@ -150,7 +151,7 @@ class _SensorScreenBodyState extends State<SensorScreenBody> {
                         title: "Cortina",
                         statusOn: "ON",
                         statusOff: "OFF",
-                        topic: '',
+                        topic: 'showroom/sala/persiana',
                       ),
                     ),
                   ],
@@ -181,6 +182,6 @@ class _SensorScreenBodyState extends State<SensorScreenBody> {
           );
         },
       ),
-    );
+    )) ;
   }
 }

@@ -6,6 +6,7 @@ class MQTTService {
 
   static Future<void> connect() async {
     _client = mqtt.MqttServerClient('test.mosquitto.org', '');
+    
 
     _client!.logging(on: true);
 
@@ -27,37 +28,57 @@ class MQTTService {
     }
   }
 
-  static void publishMessage(String topic, var message) {
-   
+  static void disconnect() {
     if (_client != null) {
-      final builder = mqtt.MqttClientPayloadBuilder();
-      builder.addString(message);
-      _client!
-          .publishMessage(topic, mqtt.MqttQos.exactlyOnce, builder.payload!);
-      
+      if (_client!.connectionStatus!.state ==
+          mqtt.MqttConnectionState.connected) {
+        _client!.disconnect();
+        print('MQTT disconnected');
+      }
     } else {
       print('MQTT client not initialized');
     }
   }
 
-  static void subscribe(String topic, void Function(String) onMessageReceived) {
+  static void publishMessage(String topic, var message) {
+    if (_client != null) {
+      final builder = mqtt.MqttClientPayloadBuilder();
+      builder.addString(message);
+      _client!
+          .publishMessage(topic, mqtt.MqttQos.exactlyOnce, builder.payload!);
+    } else {
+      print('MQTT client not initialized');
+    }
+  }
+
+  static void subscribe(
+      String topic, void Function(String) onMessageReceived) {
     if (_client != null) {
       _client!.subscribe(topic, mqtt.MqttQos.exactlyOnce);
 
-      _client!.updates!.listen((List<mqtt.MqttReceivedMessage<mqtt.MqttMessage?>> messages) {
-        final mqtt.MqttPublishMessage message = messages[0].payload as mqtt.MqttPublishMessage;
-        final String payload = mqtt.MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      _client!.updates!.listen(
+          (List<mqtt.MqttReceivedMessage<mqtt.MqttMessage?>> messages) {
+        final mqtt.MqttPublishMessage message =
+            messages[0].payload as mqtt.MqttPublishMessage;
+        final String payload =
+            mqtt.MqttPublishPayload.bytesToStringAsString(message.payload.message);
         onMessageReceived(payload);
+        print(onMessageReceived);
       });
     } else {
       print('MQTT client not initialized');
     }
   }
 
-  
+  bool isConnected() {
+    return _client?.connectionStatus?.state == mqtt.MqttConnectionState.connected ?? false;
+  }
 }
 
 void main() {
   MQTTService.connect();
- 
+  // Simulate a disconnect after a while
+  // Future.delayed(Duration(seconds: 10), () {
+  //   MQTTService.disconnect();
+  // });
 }

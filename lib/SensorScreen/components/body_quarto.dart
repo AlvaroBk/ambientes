@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../helpers/BaseMqttHandler.dart';
 import 'custom_card.dart';
 
 class SensorScreenBedBody extends StatefulWidget {
@@ -11,7 +12,7 @@ class SensorScreenBedBody extends StatefulWidget {
 class _SensorScreenBodyState extends State<SensorScreenBedBody> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return BaseMQTTScreen(child:SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
           final size = constraints.biggest;
@@ -174,6 +175,22 @@ class _SensorScreenBodyState extends State<SensorScreenBedBody> {
                         topic: 'showroom/quarto/tv',
                       ),
                     ),
+                    SizedBox(width: size.width * 0.05),
+                    Expanded(
+                      flex: 1,
+                      child: CustomCard(
+                        size: size,
+                        icon: Icon(
+                          Icons.window_outlined,
+                          size: size.width * 0.15,
+                          color: Colors.grey.shade400,
+                        ),
+                        title: "Cortina",
+                        statusOn: "ON",
+                        statusOff: "OFF",
+                        topic: 'showroom/quarto/persiana',
+                      ),
+                    ),
                     
                   ],
                 ),
@@ -182,6 +199,6 @@ class _SensorScreenBodyState extends State<SensorScreenBedBody> {
           );
         },
       ),
-    );
+    ));
   }
 }

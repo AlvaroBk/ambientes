@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../helpers/BaseMqttHandler.dart';
 import 'custom_card.dart';
 
 class SensorScreenKitchenBody extends StatefulWidget {
@@ -11,7 +12,7 @@ class SensorScreenKitchenBody extends StatefulWidget {
 class _SensorScreenBodyState extends State<SensorScreenKitchenBody> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return BaseMQTTScreen(child: SafeArea(
       child: LayoutBuilder(
         builder: (context, constraints) {
           final size = constraints.biggest;
@@ -160,6 +161,6 @@ class _SensorScreenBodyState extends State<SensorScreenKitchenBody> {
           );
         },
       ),
-    );
+    ) ,);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ambientes_app/controller/MQTTController.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import '../SensorScreen/components/TempatureScreen.dart';
 import '../SensorScreen/sensor_screen.dart';
@@ -6,6 +7,7 @@ import '../SensorScreen/sensor_screen_closet.dart';
 import '../SensorScreen/sensor_screen_kitchen.dart';
 import '../SensorScreen/sensor_screen_quarto.dart';
 import '../controller/HomeScreenController.dart';
+import '../helpers/MyConnectivity.dart';
 import '../utils/AppAssets.dart';
 import '../utils/AppSpaces.dart';
 import '../widgets/buttons.dart';
@@ -19,14 +21,59 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  Map _source = {ConnectivityResult.none: false};
+  final MyConnectivity _connectivity = MyConnectivity.instance;
+  bool _mqttConnected = false;
+
   @override
   void initState() {
     super.initState();
-    MQTTService.connect();
+    _connectivity.initialise();
+    _connectivity.myStream.listen((source) {
+      setState(() => _source = source);
+      if (source.containsKey(ConnectivityResult.wifi) ||
+          source.containsKey(ConnectivityResult.mobile)) {
+        // Check if there's internet connectivity
+        if (!_mqttConnected) {
+          // Only connect MQTT if not already connected
+          try {
+            MQTTService.connect();
+            _mqttConnected = true;
+          } catch (e) {
+            print('MQTT Connection Error: $e');
+          }
+        }
+      } else {
+        // No internet connection, disconnect MQTT if connected
+        if (_mqttConnected) {
+          MQTTService.disconnect();
+          _mqttConnected = false;
+        }
+      }
+    });
+  }
+
+  bool hasInternetConnection() {
+    return _source.keys.any((source) => source != ConnectivityResult.none && _source[source] == true);
   }
 
   @override
   Widget build(BuildContext context) {
+
+    bool isConnected = hasInternetConnection();
+
+    if (!isConnected) {
+      return const Scaffold(
+        body: Center(
+          child: Text(
+            'Sem conexão a internet',
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+      );
+    }
+
     Size size = MediaQuery.of(context).size;
     return GetBuilder<HomeScreenController>(
       init: HomeScreenController(),
